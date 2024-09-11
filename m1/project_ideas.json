@@ -1,0 +1,41 @@
+{
+  "Beginner": [
+    "Build a basic calculator. Not for your taxes though... 😉",
+    "Create a to-do list app that you'll forget to use 😅",
+    "Write a script that renames files. Because 'file_final_v2_really_final.txt' isn't cutting it.",
+    "Create a number guessing game. But don't let the computer cheat! 🤨",
+    "Write a program to reverse a string. Because why not? 🔄",
+    "Create a basic password generator. No more 'password123'! 🔐",
+    "Make a temperature converter. Because Celsius and Fahrenheit are *totally* confusing. 🥵🥶",
+    "Build a countdown timer. For when you're boiling the perfect egg. 🥚",
+    "Create a quiz game. Test your friends' 'knowledge' of pop culture trivia! 📚",
+    "Write a program to check if a number is prime. Let your computer do the math for once! 🤓",
+    "Make a text-based adventure game. Watch your friends get lost in a forest of your imagination! 🌲"
+  ],
+  "Intermediate": [
+    "Build a weather app using an API. So you can finally know when to bring an umbrella. ☔",
+    "Create a personal budget tracker. Because 'winging it' isn't a solid financial strategy. 💸",
+    "Develop a command-line address book. The digital age's answer to a Rolodex! 🗂️",
+    "Build a web scraper to extract data from a website. Just don't get too *creepy* with it. 🕸️",
+    "Create a chatbot using basic NLP techniques. Teach it sarcasm. You know you want to. 🤖",
+    "Make a file encryption program. Because not all secrets are meant to be shared. 🤫",
+    "Build a note-taking app with search functionality. Like your brain, but better at remembering stuff. 🧠",
+    "Create a web app using Flask/Django. Yes, you *are* becoming a web developer. 💻",
+    "Develop a basic image editor. Crop your ex out of those vacation photos! 🖼️✂️",
+    "Create a task management app. Watch your productivity rise... or not. 🤷‍♂️",
+    "Write a program that generates and solves Sudoku puzzles. Because solving them isn't hard enough, right? 🧩"
+  ],
+  "HARDCORE": [
+    "Develop a multiplayer game with real-time interactions. Say goodbye to your social life! 🎮",
+    "Build a machine learning model for image classification. Skynet is one step closer to reality. 🤖",
+    "Create a blockchain-based app. Because what's cooler than decentralized currency? 🪙",
+    "Develop an e-commerce site. Add a shopping cart for impulse buys. 🛒💸",
+    "Implement your own neural network. Who needs TensorFlow anyway? 😤",
+    "Create a real-time chat app with WebSockets. Slack better watch out! 🧑‍💻💬",
+    "Develop a deep learning model for NLP. Make a computer understand human sarcasm. 😏",
+    "Write a distributed system. Because one computer just isn't enough! 🖥️🖥️🖥️",
+    "Build your own OS kernel. You think Linux is cool? Try making your own! 🐧",
+    "Develop a trading bot. Watch it make smarter financial decisions than you. 📈📉",
+    "Create a 3D rendering engine. Get ready for some *serious* math and graphics. 🖥️🕹️"
+  ]
+}
