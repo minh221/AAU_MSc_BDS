@@ -1,0 +1,90 @@
+/* Change the font size and color of the metric label */
+label[data-testid="stMetricLabel"] .st-emotion-cache-jkfxgf p {
+word-break: break-word;
+margin-top: 2px;
+font-size: 20px;
+color: #ceeaf7;
+text-align: center;
+width: 100%;
+
+}
+/* Change the font size and color of the metric value */
+div[data-testid="stMetricValue"] {
+    font-size: 30px;
+    color: #000000;
+    margin: 2px;
+    text-align: center;
+}
+
+div[data-testid="stMetricLabel"] {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+/* Align filter text to center */
+div[data-testid="stMarkdownContainer"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Format the kpi mectric columns */
+div[data-testid="column"]{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* change color kpi mectric columns */
+.st-emotion-cache-12w0qpk{
+    background: #219EBC;
+    align-items: center;
+    display: flex;
+    width: 100%;
+}
+/* metric label center alignment */
+.st-emotion-cache-17c4ue {
+    align-items: center;
+    display: flex;
+    width: 100%;
+}
+
+/* chart title format */
+.st-emotion-cache-1rsyhoq p {
+    word-break: break-word;
+    margin-top: 2px;
+    font-size: 20px;
+    color: #055A84;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: flex;
+}
+.st-emotion-cache-1r6slb0 {
+    width: 100%;
+}
+
+/* Removing white space at the top of the app */
+.block-container {
+                padding-top: 2.5rem;
+                padding-bottom: 0rem;
+                padding-left: 5rem;
+                padding-right: 5rem;
+            }
+h1 {color:#ffffff; margin-top: 10px
+}
+/* Set the background color for kpi title, 
+lưu ý là mỗi header đựng trong 1 container, khi set background phải dò đúng container đó thì mới set full được*/
+h2 {
+    color: #FFFFFF;
+    font-size: 40px;
+}
+
+div[data-testid="stHeading"] {
+    background: #05547b;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+h2 {font-size: 30px;}

@@ -2,16 +2,15 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import altair as alt
-
-st.set_page_config(layout="wide")
 
 @st.cache_data
 def fetch_and_clean_data():
     loan_data = [pd.read_csv(f'https://github.com/minh221/AAU_MSc_BDS/raw/main/m1/kiva_data_{i}.zip') for i in [1,2]]
     ## concat all parts of kiva_loan_data
     data = pd.concat(loan_data)
-    mpi = pd.read_csv('https://raw.githubusercontent.com/aaubs/ds-master/main/data/assignments_datasets/KIVA/kiva_mpi_region_locations.csv')
+    iso = pd.read_csv('C:/Users/ADMIN/Downloads/MSc Business Data Science/bds_assignment/m1/iso_3166.csv')
+    iso = iso[['name', 'alpha-2', 'alpha-3', 'country-code', 'region', 'sub-region']].rename( columns={'region':'world_region'}
+    )
 
     ## --------------------------------------------- Cleaning data ------------------------------------------
     data.dropna(subset=['borrower_genders', 'country_code', 'disbursed_time', 'funded_time'], inplace=True)
@@ -32,11 +31,9 @@ def fetch_and_clean_data():
         data[col] = pd.to_datetime(data[col])
     
     ## join with mpi_df to find the world region
-    data = data.merge(mpi[['country', 'world_region']].drop_duplicates(), on='country')
+    data = iso.merge(data, left_on='alpha-2', right_on='country_code')
 
-    mpi = mpi[['country', 'region', 'MPI']].dropna()
-
-    return data, mpi
+    return data
 
 
 ## ---------------------------------------------- Starting building app -----------------------------------------
@@ -52,7 +49,7 @@ def display_filter(data):
     end_date = pd.Timestamp(st.sidebar.date_input("End date", data['date'].max().date()))
 
     selected_world_regions = st.sidebar.multiselect("Select World region", sorted(data['world_region'].unique()))
-    selected_countries = st.sidebar.multiselect("Select Country", sorted(data['country'].unique()))
+    selected_countries = st.sidebar.multiselect("Select Country", sorted(data['name'].unique()))
     selected_sector = st.sidebar.multiselect("Select Sector", sorted(data['sector'].unique()))
     selected_subsector = st.sidebar.multiselect("Select Sub-sector", sorted(data['activity'].unique()))
 
@@ -61,7 +58,7 @@ def display_filter(data):
 ## calculate and display KPIs
 def display_kpi(data):
     ## calculating metrics
-    nr_country = f"{len(data['country'].unique())} countries"
+    nr_country = f"{len(data['name'].unique())} countries"
     total_loan_amt = data['loan_amount'].sum()
     loan_amt_in_M = f"{total_loan_amt/1000000 :.2f}M USD"
     nr_loan = f"{len(data) :,}"
@@ -75,10 +72,9 @@ def display_kpi(data):
         col.metric(label=kpi_name, value=kpi_value)
 
 def get_filtered_data(data):
-
-    start_date, end_date, selected_world_regions, selected_countries, selected_sector, selected_subsector = display_filter(df)
+    start_date, end_date, selected_world_regions, selected_countries, selected_sector, selected_subsector = display_filter(data)
     filtered_df = filtering(data, 'world_region', selected_world_regions)
-    filtered_df = filtering(filtered_df, 'country', selected_countries)
+    filtered_df = filtering(filtered_df, 'name', selected_countries)
     filtered_df = filtering(filtered_df, 'sector', selected_sector)
     filtered_df = filtering(filtered_df, 'activity', selected_subsector)
     filtered_df = filtered_df[filtered_df['date'].between(start_date, end_date)]
@@ -123,9 +119,13 @@ def days_fully_funded(data, col):
         col.write("Number of Loans by Days to Fully Funded")
         st.pyplot(fig)
 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
 if __name__ == '__main__':
-    st.title("Minh's Kiva Application")
-    df, mpi = fetch_and_clean_data()
+    df = fetch_and_clean_data()
     filtered_df = get_filtered_data(df)
     display_kpi(filtered_df)
 
@@ -134,86 +134,4 @@ if __name__ == '__main__':
     dist_loan_amount(filtered_df, col1)
     bar_loan_term(filtered_df, col2)
     days_fully_funded(filtered_df, col3)
-    st.markdown(
-        """
-    <style>
-    /* Change the font size and color of the metric label */
-    label[data-testid="stMetricLabel"] .st-emotion-cache-jkfxgf p {
-    word-break: break-word;
-    margin-top: 2px;
-    font-size: 20px;
-    color: #219EBC;
-    text-align: center;
-    width: 100%;
-
-    }
-    /* Change the font size and color of the metric value */
-    div[data-testid="stMetricValue"] {
-        font-size: 30px;
-        color: #FFFFFF;
-        margin: 2px;
-        text-align: center;
-    }
-
-    div[data-testid="stMetricLabel"] {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-    /* Align filter text to center */
-    div[data-testid="stMarkdownContainer"] {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* Ensure it takes full width */
-    }
-
-    /* Format the kpi mectric columns */
-    div[data-testid="column"]{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    /* change color kpi mectric columns */
-    .st-emotion-cache-12w0qpk{
-        background: #055A84;
-        align-items: center;
-        display: flex;
-        width: 100%;
-    }
-    /* metric label center alignment */
-    .st-emotion-cache-17c4ue {
-        align-items: center;
-        display: flex;
-        width: 100%;
-    }
-
-    /* chart title format */
-    .st-emotion-cache-1rsyhoq p {
-        word-break: break-word;
-        margin-top: 2px;
-        font-size: 20px;
-        color: #055A84;
-        font-weight: bold;
-    }
-
-    /* Removing white space at the top of the app */
-    .block-container {
-                    padding-top: 2.5rem;
-                    padding-bottom: 0rem;
-                    padding-left: 5rem;
-                    padding-right: 5rem;
-                }
-    h1 {color:#F0F4F6; margin-top: 10px
-    }
-    h2 {color:#FFFFFF; font-size: 30px; margin-bottom: 10px
-    }
-    div[data-testid="stHeading"]{background:#023047; 
-    }
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
-
+    local_css("C:/Users/ADMIN/Downloads/MSc Business Data Science/bds_assignment/m1/streamlit_app/style_main.css")
