@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from duckduckgo_search import DDGS
 
 @st.cache_data
 def fetch_and_clean_data():
@@ -70,6 +71,9 @@ def display_kpi(data):
     st.header("KPI Metrics")
     for i, (col, (kpi_name, kpi_value)) in enumerate(zip(st.columns(4), zip(kpi_names, kpi_values))):
         col.metric(label=kpi_name, value=kpi_value)
+    return str({'nbr_of_market_country':nr_country, 
+                'loan_amt_in_M': loan_amt_in_M, 
+                'avg_loan_amt': avg_loan_amt})
 
 def get_filtered_data(data):
     start_date, end_date, selected_world_regions, selected_countries, selected_sector, selected_subsector = display_filter(data)
@@ -91,21 +95,23 @@ def dist_loan_amount(data, col):
         col.header = "Distribution of Loan Amount (USD)"
         col.write("Distribution of Loan Amount (USD)")
         st.pyplot(fig)
+    return str(df['loan_amount'].describe())
 
 
 def bar_loan_term(data, col):
     bin_edges = [0, 6, 12, 36, 60, 120]
     bin_labels = ['< 6M', '6M - 1Y', '1-3 Y', '3-5 Y', '5-10 Y']
     data['loan_term'] = pd.cut(data['term_in_months'], bins=bin_edges, labels=bin_labels, right=False)
-    grouped = data.groupby('loan_term')['id'].count().reset_index()
+    grouped = data.groupby('loan_term')['id'].count().reset_index().rename(columns={'id':'nbr_of_loan'})
 
     fig, ax = plt.subplots()
-    ax.bar(grouped['loan_term'], grouped['id'], color='#219EBC')
+    ax.bar(grouped['loan_term'], grouped['nbr_of_loan'], color='#219EBC')
     
     with col:
         col.header = "Number of Loans by Loan Term"
         col.write("Number of Loans by Loan Term")
         st.pyplot(fig)
+    return str(grouped[['loan_term', 'nbr_of_loan']])
 
 def days_fully_funded(data, col):
     data['day_to_funded'] = (data['funded_time'] - data['disbursed_time']) / np.timedelta64(1, 'D')
@@ -118,6 +124,7 @@ def days_fully_funded(data, col):
         col.header = "Number of Loans by Days to Fully Funded"
         col.write("Number of Loans by Days to Fully Funded")
         st.pyplot(fig)
+    return str(df_days['day_to_funded'].describe())
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -127,11 +134,21 @@ def local_css(file_name):
 if __name__ == '__main__':
     df = fetch_and_clean_data()
     filtered_df = get_filtered_data(df)
-    display_kpi(filtered_df)
+    kpi_str = display_kpi(filtered_df)
 
     col1, col2, col3 = st.columns(3)
     
-    dist_loan_amount(filtered_df, col1)
-    bar_loan_term(filtered_df, col2)
-    days_fully_funded(filtered_df, col3)
+    loan_amount_str = dist_loan_amount(filtered_df, col1)
+    loan_term_str = bar_loan_term(filtered_df, col2)
+    days_funded_str = days_fully_funded(filtered_df, col3)
     local_css("C:/Users/ADMIN/Downloads/MSc Business Data Science/bds_assignment/m1/streamlit_app/style_main.css")
+    chat_text = f'''This is loan information of Kiva, with these kpis: {kpi_str};
+                        and discribe of loan amount: {loan_amount_str}
+                        and table number of loans by loan_term: {loan_term_str}
+                        and describe of number_of_days_to_fully_funded: {days_funded_str}
+                    As an advanced data analyst, generate 4 short sentences to summarize and give recommendation for each point,
+                    display in vertical order
+                    '''
+    if st.button('AI Assitant'):
+        with st.expander('Take a look!:'):
+            st.markdown(DDGS().chat(chat_text, model='gpt-4o-mini'))

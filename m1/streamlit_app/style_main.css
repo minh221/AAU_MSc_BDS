@@ -51,8 +51,8 @@ div[data-testid="column"]{
     width: 100%;
 }
 
-/* chart title format */
-.st-emotion-cache-1rsyhoq p {
+/* chart title format   .st-emotion-cache-1rsyhoq p   */
+.st-emotion-cache-qe0145 {
     word-break: break-word;
     margin-top: 2px;
     font-size: 20px;
@@ -88,3 +88,4 @@ div[data-testid="stHeading"] {
 }
 
 h2 {font-size: 30px;}
+
