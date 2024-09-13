@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 @st.cache_data
 def fetch_and_clean_data():
-    loan_data = [pd.read_csv(f'https://github.com/minh221/AAU_MSc_BDS/raw/main/m1/kiva_data_{i}.zip') for i in [1,2]]
+    loan_data = [pd.read_csv(f'https://github.com/minh221/AAU_MSc_BDS/raw/main/m1/data/kiva_data_{i}.zip') for i in [1,2]]
     ## concat all parts of kiva_loan_data
     data = pd.concat(loan_data)
-    iso = pd.read_csv('C:/Users/ADMIN/Downloads/MSc Business Data Science/bds_assignment/m1/iso_3166.csv')
+    iso = pd.read_csv('https://raw.githubusercontent.com/minh221/AAU_MSc_BDS/main/m1/data/iso_3166.csv')
     iso = iso[['name', 'alpha-2', 'alpha-3', 'country-code', 'region', 'sub-region']].rename( columns={'region':'world_region'}
     )
 
