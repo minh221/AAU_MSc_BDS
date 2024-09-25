@@ -61,6 +61,13 @@ div[data-testid="column"]{
     margin-bottom: 1rem;
     display: flex;
 }
+
+/* .st-emotion-cache-1rsyhoq p {
+    word-break: break-word;
+    color: #05547b;
+    font-weight: bold;
+} */
+ 
 .st-emotion-cache-1r6slb0 {
     width: 100%;
 }
